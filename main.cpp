@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     Processing_Event p_e;
 
     try {
-        p_e.parse_file(argv[0]);
+        p_e.parse_file("file3");
     }
     catch (const string& error_message) {
         cout << error_message << endl;
