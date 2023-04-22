@@ -121,6 +121,19 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
         out_event.set_name_client("NotOpenYet");
         return out_event;
     }
+    bool contain_name = false;
+    for (auto &pos: queue) {
+        if (pos.first == e.get_name_client()) {
+            contain_name = true;
+        }
+    }
+
+    if (e.get_id() == 1 && contain_name) {
+        out_event.set_id(13);
+        out_event.set_name_client("YouShallNotPass");
+        return out_event;
+    }
+
     if (e.get_id() == 1) {
         queue.insert(make_pair<string, int> (e.get_name_client(), e.get_table()));
     }
@@ -136,19 +149,6 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
         if (pos.second == -1) {
             check_queue = true;
         }
-    }
-
-    bool contain_name = false;
-    for (auto &pos: queue) {
-        if (pos.first == e.get_name_client()) {
-            contain_name = true;
-        }
-    }
-
-    if (!contain_name) {
-        out_event.set_id(13);
-        out_event.set_name_client("YouShallNotPass");
-        return out_event;
     }
 
     if (e.get_id() == 4) {
@@ -219,39 +219,33 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
     }
 
 
-//    if (e.get_id() == 3 && busy_tables == information.get_num_tables()){
-//        out_event.set_id(13);
-//        out_event.set_name_client(e.get_name_client());
-//        return out_event;
-//    }
+    if (e.get_id() == 3){
+        if (contain_table_name != e.get_name_client()) {
+            for (auto &pos: queue) {
+                if (pos.first == e.get_name_client()) {
+                    pos.second = -1;
+                }
 
-//    if (e.get_id() == 2){
-//        for (auto &pos: queue) {
-//            if (pos.first == e.get_name_client() && pos.second > 0) {
-//                pos.second = e.get_table();
-//                for (auto &i: time_tables) {
-//                    if (i.get_name_client() == e.get_name_client()){
-//                        i.set_table(e.get_table());
-//                        i.set_finish_time(e.get_cur_time());
-//                    }
-//                }
-//            }
-//        }
-//    }
+            }
+        }
+    }
+    int count_client_wait = 0;
+    for (auto &pos: queue) {
+        if (pos.second == -1) {
+            pos.second = -1;
+            count_client_wait++;
+        }
+    }
+    if (e.get_id() == 3 && busy_tables == information.get_num_tables() && count_client_wait > busy_tables){
+        out_event.set_id(11);
+        out_event.set_name_client(e.get_name_client());
+        queue.erase(queue.find(e.get_name_client()));
+        return out_event;
+    }
+
     if (e.get_id() == 2) {
         for (auto &pos: queue) {
             if (pos.first == e.get_name_client()) {
-//                if (pos.second == e.get_table()){
-//                    out_event.set_id(13);
-//                    out_event.set_name_client("PlaceIsBusy");
-////                    for (auto &pos: queue) {
-////                        if (pos.first == e.get_name_client()) {
-////                            pos.second = -1;
-////                        }
-////
-////                    }
-//                    return out_event;
-//                }
                 if (pos.second > 0) {
                     int size = time_tables.size();
                     for (int i = 0; i < size; i++) {
@@ -307,6 +301,7 @@ void Processing_Event::print() {
     for (auto &it: queue) {
         temp.set_name_client(it.first);
         temp.set_id(11);
+        temp.set_table(0);
         temp.set_cur_time(pair<int, int>(19, 0));
         for (auto &it2: time_tables) {
             if (it2.get_finish_time() == pair<int, int>(0, 0)) {
