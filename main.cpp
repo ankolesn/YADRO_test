@@ -3,7 +3,7 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
-    ifstream file("file");
+    ifstream file(argv[1]);
     if (!file.is_open()) {
         cout << "Error: cannot open input file " << argv[1] << endl;
         return 1;

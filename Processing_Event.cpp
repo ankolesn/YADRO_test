@@ -38,7 +38,7 @@ bool check_format(string str, regex regexPattern) {
     return true;
 }
 
-bool check_id(int n, string s){
+bool check_id(int n, string s) {
     if (n > 4) {
         cout << "Line error: " << s << endl;
         return false;
@@ -99,11 +99,19 @@ void Processing_Event::parse_file(string filename) {
         }
         temp.set_id(stoi(s.substr(pos + 1, pos2)));
 
+        int pos3 = 0;
         if (temp.get_id() == 2) {
-            pos = s.find(' ', pos2 + 1);
-            temp.set_name_client(s.substr(pos2 + 1, pos));
-            temp.set_name_client(temp.get_name_client().substr(0, 7));
-            temp.set_table(stoi(s.substr(pos + 1)));
+            pos = s.find(' ', pos + 1);
+            string str = s.substr(pos + 1, pos2);
+            if (str.find(' ') != -1) {
+                pos3 = str.find(' ');
+                str.erase(pos3);
+            }
+            pos3 = s.find(' ', pos2 + 1);
+            temp.set_name_client(str);
+            string sss = (s.substr(pos3));
+            sss.erase(find(sss.begin(), sss.end(), ' '));
+            temp.set_table(stoi(sss));
         } else {
             temp.set_name_client(s.substr(pos2 + 1));
             temp.set_table(0);
@@ -135,7 +143,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
     }
 
     if (e.get_id() == 1) {
-        queue.insert(make_pair<string, int> (e.get_name_client(), e.get_table()));
+        queue.insert(make_pair<string, int>(e.get_name_client(), e.get_table()));
     }
 
     if (!queue.count(e.get_name_client()) && e.get_id() != 1) {
@@ -146,14 +154,15 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
     }
     bool check_queue = false;
     for (auto &pos: queue) {
-        if (pos.second == -1) {
+//        if (pos.second == -1 || pos.second == 0) {
+        if (pos.second == -1 || pos.second == 0) {
             check_queue = true;
         }
     }
 
     if (e.get_id() == 4) {
         for (auto it = time_tables.begin(); it < time_tables.end(); ++it) {
-            if (it->get_name_client() == e.get_name_client() && it->get_finish_time() == pair<int, int> (0,0)) {
+            if (it->get_name_client() == e.get_name_client() && it->get_finish_time() == pair<int, int>(0, 0)) {
                 it->set_finish_time(e.get_cur_time());
             }
         }
@@ -165,7 +174,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
         int outgoing_client_table;
         string outgoing_client_name;
         for (auto pos = queue.begin(); pos != queue.end(); pos++) {
-            if (pos->second == -1) {
+            if (pos->second == -1 || pos->second == 0) {
                 outgoing_client_table = queue.find(e.get_name_client())->second;
                 out_event.set_table(outgoing_client_table);
                 queue.erase(queue.find(e.get_name_client()));
@@ -219,7 +228,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
     }
 
 
-    if (e.get_id() == 3){
+    if (e.get_id() == 3) {
         if (contain_table_name != e.get_name_client()) {
             for (auto &pos: queue) {
                 if (pos.first == e.get_name_client()) {
@@ -236,7 +245,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
             count_client_wait++;
         }
     }
-    if (e.get_id() == 3 && busy_tables == information.get_num_tables() && count_client_wait > busy_tables){
+    if (e.get_id() == 3 && busy_tables == information.get_num_tables() && count_client_wait > busy_tables) {
         out_event.set_id(11);
         out_event.set_name_client(e.get_name_client());
         queue.erase(queue.find(e.get_name_client()));
@@ -244,12 +253,13 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
     }
 
     if (e.get_id() == 2) {
+        int size = time_tables.size();
         for (auto &pos: queue) {
             if (pos.first == e.get_name_client()) {
                 if (pos.second > 0) {
-                    int size = time_tables.size();
                     for (int i = 0; i < size; i++) {
-                        if (time_tables[i].get_name_client() == e.get_name_client()){
+                        if (time_tables[i].get_name_client() == e.get_name_client() &&
+                            time_tables[i].get_finish_time() == pair<int, int>(0, 0)) {
                             Time_Table tmp;
                             tmp.set_name_client(e.get_name_client());
                             tmp.set_start_time(e.get_cur_time());
@@ -259,8 +269,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
                             pos.second = e.get_table();
                         }
                     }
-                }
-                else {
+                } else {
                     pos.second = e.get_table();
                     busy_tables++;
                     Time_Table tmp;
@@ -273,7 +282,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
         }
     }
 
-    if (e.get_id() == 3 && queue.size() < information.get_num_tables()) {
+    if (e.get_id() == 3 && busy_tables < information.get_num_tables()) {
         out_event.set_id(11);
         out_event.set_name_client("ICanWaitNoLonger!");
         return out_event;
@@ -302,10 +311,10 @@ void Processing_Event::print() {
         temp.set_name_client(it.first);
         temp.set_id(11);
         temp.set_table(0);
-        temp.set_cur_time(pair<int, int>(19, 0));
+        temp.set_cur_time(pair<int, int>(information.get_finish_time().first, information.get_finish_time().second));
         for (auto &it2: time_tables) {
             if (it2.get_finish_time() == pair<int, int>(0, 0)) {
-                it2.set_finish_time(pair<int, int>(19, 0));
+                it2.set_finish_time(pair<int, int>(information.get_finish_time().first, information.get_finish_time().second));
             }
         }
         cout << convert_to_string_outgoing_event(temp) << endl;
@@ -375,7 +384,7 @@ void Processing_Event::revenue_calculation() {
         sum_minutes = 0;
         cur_minutes = 0;
         a.price = 0;
-        a.table = t_o_c[i].first;
+        a.table = i + 1;
         if (a.table > information.get_num_tables() || a.table < 0) {
             break;
         }
@@ -385,7 +394,7 @@ void Processing_Event::revenue_calculation() {
                 cur_minutes += sum_minutes;
                 p = minutes_to_hours(sum_minutes);
                 if (p.second > 0) {
-                    a.price += p.first * information.get_price() + 10;
+                    a.price += p.first * information.get_price() + information.get_price();
                 } else {
                     a.price += p.first * information.get_price();
                 }
