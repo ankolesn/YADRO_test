@@ -22,6 +22,7 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 
 `file` - Тестовый файл из задания
 
+Результат:
 
 ![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/1.png)
 
@@ -39,13 +40,19 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 15:52 |  |  | client3 | (20, 70, 20) | (1:04, 5:27, 1:15)
 19:00 |  |  | |(20, 70, 90) | (1:04, 5:27, 8:02)
 
+Результат:
+
 ![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/2.png)
 
 `file3` - Случай, когда клиент попытался сесть за стол, который занимает
 
+Результат:
+
 ![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/3.png)
 
 `file4` - Проверка входных данных
+
+Результат:
 
 ![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/4.png)
 
@@ -69,4 +76,27 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 15:52 | client6 | client5 | client3 | (70, 30, 0) | (5:58, 2:18, 0)
 19:00 | client6 | client5 | client3 | (110, 100, 90) | (9:06, 08:35, 8:01)
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/6.png)
+Результат:
+
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/5.png)
+
+`file6` 
+
+Таблица, для наглядного изменения работы компьютерного клуба:
+
+Время | 1 стол | 2 стол | 3 стол | 4 стол | Выручка | Время работы стола
+--- | --- | --- | --- | --- | --- | ---
+10:54 |  | vasya | 
+11:25 | kolya | vasya | 
+12:05 | kolya | vasya | maksim | 
+12:23 | petya  | vasya | maksim |  | (15, 0, 0, 0) | (00:58, 0, 0, 0)
+13:35 |  | vasya | maksim | petya | (45, 0, 0, 0) | (02:10, 0, 0, 0)
+13:46 |  | vasya |  | petya | (45, 0, 30, 0) | (02:10, 0, 01:41, 0)
+13:59 |  | vasya | petya |  | (45, 0, 30, 15) | (02:10, 0, 01:41, 00:24)
+14:43 |  | vasya |  |  | (45, 0, 45, 15) | (02:10, 0, 02:25, 00:24)
+19:30 |  | vasya |  |  | (45, 135, 45, 15) | (02:10, 08:36, 02:25, 00:24)
+
+
+Результат:
+
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/7.png)
