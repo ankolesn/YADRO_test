@@ -40,15 +40,15 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 --- | --- | --- | --- | --- | ---
 09:54 | client1 |  | 
 10:25 | client1 | client2 | 
-10:58 |  | client2 | client1 | (20, 0, 0) | (1:04, 0, 0)
-12:33 |  | client2 | client3 | (20, 0, 20) | (1:04, 0, 1:15)
-12:43 |  | client4 | client3 | (20, 30, 20) | (1:04, 2:18, 1:15)
-15:52 |  |  | client3 | (20, 70, 20) | (1:04, 5:27, 1:15)
-19:00 |  |  | |(20, 70, 90) | (1:04, 5:27, 8:02)
+10:58 |  | client2 | client1 | (20, 0, 0) | (01:04, 0, 0)
+12:33 |  | client2 | client4 | (20, 0, 20) | (01:04, 0, 01:35)
+12:43 |  |  | client4 | (20, 30, 20) | (01:04, 02:18, 01:35)
+15:52 |  |  |  | (20, 30, 60) | (01:04, 02:18, 04:54)
+19:00 |  |  | |(20, 30, 60) | (01:04, 02:18, 04:54)
 
 Результат:
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/2.png)
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/9.png)
 
 `file3` - Случай, когда клиент попытался сесть за стол, который занимает
 
