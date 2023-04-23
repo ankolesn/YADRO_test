@@ -174,7 +174,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
         int outgoing_client_table;
         string outgoing_client_name;
         for (auto pos = queue.begin(); pos != queue.end(); pos++) {
-            if (pos->second == -1 || pos->second == 0) {
+            if (pos->second == -1) {
                 outgoing_client_table = queue.find(e.get_name_client())->second;
                 out_event.set_table(outgoing_client_table);
                 queue.erase(queue.find(e.get_name_client()));
@@ -219,7 +219,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
         if (contain_table_name != e.get_name_client()) {
             for (auto &pos: queue) {
                 if (pos.first == e.get_name_client()) {
-                    pos.second = -1;
+                    pos.second = 0;
                 }
 
             }
