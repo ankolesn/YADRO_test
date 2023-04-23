@@ -23,7 +23,7 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 `file` - Тестовый файл из задания
 
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/1.png)
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/1.png)
 
 `file2` - Случай, когда клиент поменял стол
 
@@ -39,15 +39,15 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 15:52 |  |  | client3 | (20, 70, 20) | (1:04, 5:27, 1:15)
 19:00 |  |  | |(20, 70, 90) | (1:04, 5:27, 8:02)
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/2.png)
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/2.png)
 
 `file3` - Случай, когда клиент попытался сесть за стол, который занимает
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/3.png)
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/3.png)
 
 `file4` - Проверка входных данных
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/4.png)
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/4.png)
 
 `file5` - Случаи, когда:
 
@@ -69,4 +69,4 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 15:52 | client6 | client5 | client3 | (70, 30, 0) | (5:58, 2:18, 0)
 19:00 | client6 | client5 | client3 | (110, 100, 90) | (9:06, 08:35, 8:01)
 
-![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/6.png)
+![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/6.png)
