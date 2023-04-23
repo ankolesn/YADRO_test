@@ -80,6 +80,9 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 
 ![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/5.png)
 
+Пояснение:
+Так как размер очереди ожидания задается количеством столов, то размер очереди равен 3. В 10:59 все столы заняты, поэтому client4, client5 и client6 ждут своей очереди, а client7 уходит в 11:48, так как очередь переполнена. 
+
 `file6` 
 
 Таблица, для наглядного изменения работы компьютерного клуба:
@@ -100,3 +103,6 @@ g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 Результат:
 
 ![Image alt](https://github.com/ankolesn/YADRO_test/blob/main/img/7.png)
+
+Пояснение:
+Все клиенты приходящие в клуб встают в очередь ожидания. Если произошло событие 4 (клиент ушел), то первый клиент из очереди занимает этот стол, поэтому клиент petya занял стол №1 в 12:23, после того как клиент kolya ушел.
