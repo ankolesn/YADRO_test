@@ -155,7 +155,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
     bool check_queue = false;
     for (auto &pos: queue) {
 //        if (pos.second == -1 || pos.second == 0) {
-        if (pos.second == -1 || pos.second == 0) {
+        if (pos.second == -1) {
             check_queue = true;
         }
     }
@@ -258,8 +258,8 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
             if (pos.first == e.get_name_client()) {
                 if (pos.second > 0) {
                     for (int i = 0; i < size; i++) {
-                        if (time_tables[i].get_name_client() == e.get_name_client() &&
-                            time_tables[i].get_finish_time() == pair<int, int>(0, 0)) {
+                        //&& time_tables[i].get_finish_time() == pair<int, int>(0, 0)
+                        if (time_tables[i].get_name_client() == e.get_name_client() ) {
                             Time_Table tmp;
                             tmp.set_name_client(e.get_name_client());
                             tmp.set_start_time(e.get_cur_time());
