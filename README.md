@@ -1,11 +1,13 @@
 # Тестовое задание
 ## Запуск программы
+
 Склонировать репозиторий
 
 В командной строке:
 ```
 git clone https://github.com/ankolesn/YADRO_test
 ```
+- Без системы сборки:
 
 Перейти в папку
 ```
@@ -15,13 +17,65 @@ cd YADRO_test
 Скомпилировать файлы
 
 ```
-g++ main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
+g++ -o yadro main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cpp
 ```
 
 Запуск
 
+Для Linux:
+
 ```
-.\a file
+.\yadro file
+```
+Для Windows:
+
+```
+yadro file
+```
+- С системой сборки cmake:
+
+Для Windows:
+
+```
+mkdir build
+```
+
+```
+cd build
+```
+
+```
+cmake .. -G "MinGW Makefiles"
+```
+
+```
+make all
+```
+
+```
+yadro.exe ..\file
+```
+
+Для Linux:
+
+```
+mkdir build
+```
+
+```
+cd build
+```
+
+```
+cmake ..
+```
+
+```
+make all
+```
+
+```
+./yadro ../file
 ```
 
 ## Тестовые файлы и результаты работы программы
