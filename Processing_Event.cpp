@@ -40,7 +40,23 @@ bool check_format(string str, regex regexPattern) {
 
 bool check_id(int n, string s) {
     if (n > 4) {
-        cout << "Line error: " << s << endl;
+        return false;
+    }
+    return true;
+}
+
+bool check_file_time(pair<int, int> p, pair<int, int> pred){
+    if (p.first < pred.first) {
+        return false;
+    }
+    if (p.first == pred.first && p.second < pred.second){
+        return false;
+    }
+    return true;
+}
+
+bool check_table(int n, int count_table){
+    if (n > count_table || n <= 0){
         return false;
     }
     return true;
@@ -82,6 +98,7 @@ void Processing_Event::parse_file(string filename) {
 
     std::regex eventRegex(R"(\d{2}:\d{2} \d+ [a-z0-9_-]+|\d{2}:\d{2} \d+ [a-z0-9_-]+ \d+)");
 
+    pair<int, int> pred = pair<int, int> (0,0);
     while (!file.eof()) {
         getline(file, s);
         if (!check_format(s, eventRegex)) {
@@ -92,6 +109,10 @@ void Processing_Event::parse_file(string filename) {
         p = check_time(s.substr(0, pos));
         temp.set_cur_time(p);
 
+        if (!check_file_time(p, pred) && pred != pair<int,int> (0,0)) {
+            throw string {s};
+        }
+        pred = p;
         pos2 = s.find(' ', pos + 1);
 
         if (!check_id(stoi(s.substr(pos + 1, pos2)), s)) {
@@ -111,7 +132,11 @@ void Processing_Event::parse_file(string filename) {
             temp.set_name_client(str);
             string sss = (s.substr(pos3));
             sss.erase(find(sss.begin(), sss.end(), ' '));
+            if (!check_table( stoi(sss), information.get_num_tables() )){
+                throw string{s};
+            }
             temp.set_table(stoi(sss));
+
         } else {
             temp.set_name_client(s.substr(pos2 + 1));
             temp.set_table(0);
