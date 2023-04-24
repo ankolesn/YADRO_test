@@ -45,18 +45,18 @@ bool check_id(int n, string s) {
     return true;
 }
 
-bool check_file_time(pair<int, int> p, pair<int, int> pred){
+bool check_file_time(pair<int, int> p, pair<int, int> pred) {
     if (p.first < pred.first) {
         return false;
     }
-    if (p.first == pred.first && p.second < pred.second){
+    if (p.first == pred.first && p.second < pred.second) {
         return false;
     }
     return true;
 }
 
-bool check_table(int n, int count_table){
-    if (n > count_table || n <= 0){
+bool check_table(int n, int count_table) {
+    if (n > count_table || n <= 0) {
         return false;
     }
     return true;
@@ -84,6 +84,9 @@ void Processing_Event::parse_file(string filename) {
     information.set_start_time(p);
 
     p = check_time(s.substr(pos + 1));
+    if (p.first <= information.get_start_time().first) {
+        p.first += 24;
+    }
     information.set_finish_time(p);
 
     getline(file, s);
@@ -98,7 +101,7 @@ void Processing_Event::parse_file(string filename) {
 
     std::regex eventRegex(R"(\d{2}:\d{2} \d+ [a-z0-9_-]+|\d{2}:\d{2} \d+ [a-z0-9_-]+ \d+)");
 
-    pair<int, int> pred = pair<int, int> (0,0);
+    pair<int, int> pred = pair<int, int>(0, 0);
     while (!file.eof()) {
         getline(file, s);
         if (!check_format(s, eventRegex)) {
@@ -109,8 +112,8 @@ void Processing_Event::parse_file(string filename) {
         p = check_time(s.substr(0, pos));
         temp.set_cur_time(p);
 
-        if (!check_file_time(p, pred) && pred != pair<int,int> (0,0)) {
-            throw string {s};
+        if (!check_file_time(p, pred) && pred != pair<int, int>(0, 0)) {
+            throw string{s};
         }
         pred = p;
         pos2 = s.find(' ', pos + 1);
@@ -132,7 +135,7 @@ void Processing_Event::parse_file(string filename) {
             temp.set_name_client(str);
             string sss = (s.substr(pos3));
             sss.erase(find(sss.begin(), sss.end(), ' '));
-            if (!check_table( stoi(sss), information.get_num_tables() )){
+            if (!check_table(stoi(sss), information.get_num_tables())) {
                 throw string{s};
             }
             temp.set_table(stoi(sss));
@@ -284,7 +287,7 @@ Processing_Event::outgoing_events(Info_Club information, Event e, multimap<strin
                 if (pos.second > 0) {
                     for (int i = 0; i < size; i++) {
                         //&& time_tables[i].get_finish_time() == pair<int, int>(0, 0)
-                        if (time_tables[i].get_name_client() == e.get_name_client() ) {
+                        if (time_tables[i].get_name_client() == e.get_name_client()) {
                             Time_Table tmp;
                             tmp.set_name_client(e.get_name_client());
                             tmp.set_start_time(e.get_cur_time());
@@ -339,8 +342,17 @@ void Processing_Event::print() {
         temp.set_cur_time(pair<int, int>(information.get_finish_time().first, information.get_finish_time().second));
         for (auto &it2: time_tables) {
             if (it2.get_finish_time() == pair<int, int>(0, 0)) {
-                it2.set_finish_time(pair<int, int>(information.get_finish_time().first, information.get_finish_time().second));
+                it2.set_finish_time(
+                        pair<int, int>(information.get_finish_time().first, information.get_finish_time().second));
             }
+        }
+        string res = "";
+        if (information.get_finish_time().first >= 24) {
+            information.set_finish_time(
+                    pair<int, int>(information.get_finish_time().first - 24, information.get_finish_time().second));
+            res += convert_hours(information.get_finish_time()) + ' ' + to_string(temp.get_id()) + ' ' + temp.get_name_client();
+            cout << res << endl;
+            break;
         }
         cout << convert_to_string_outgoing_event(temp) << endl;
     }
@@ -361,11 +373,13 @@ string Processing_Event::convert_to_string_incoming_event(Event e) {
     if (e.get_table() != 0) {
         res += ' ' + to_string(e.get_table());
     }
+
     return res;
 }
 
 string Processing_Event::convert_to_string_outgoing_event(Event e) {
     string res = "";
+
     res += convert_hours(e.get_cur_time()) + ' ' + to_string(e.get_id()) + ' ' + e.get_name_client();
     if (e.get_table() != 0) {
         res += ' ' + to_string(e.get_table());
