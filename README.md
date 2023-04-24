@@ -7,12 +7,13 @@
 ```
 git clone https://github.com/ankolesn/YADRO_test
 ```
-- Без системы сборки:
 
 Перейти в папку
 ```
 cd YADRO_test
 ```
+- Без системы сборки:
+---
 
 Скомпилировать файлы
 
@@ -33,6 +34,7 @@ g++ -o yadro main.cpp Info_Club.cpp Processing_Event.cpp Time_Table.cpp Event.cp
 yadro file
 ```
 - С системой сборки cmake:
+---
 
 Для Windows:
 
